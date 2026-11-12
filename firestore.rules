@@ -6,7 +6,7 @@ service cloud.firestore {
     function isAdmin() {
       return signedIn()
         && request.auth.token.email_verified == true
-        && request.auth.token.email in ['subscriptionstructlab@gmail.com'];
+        && request.auth.token.email in ['subscriptionstructlab@gmail.com', 'ashibadnan42@gmail.com'];
     }
     function owner(uid) { return signedIn() && request.auth.uid == uid; }
     function str(v, max) { return v is string && v.size() > 0 && v.size() <= max; }
