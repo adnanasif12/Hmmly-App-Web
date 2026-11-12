@@ -1,0 +1,61 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['subscriptionstructlab@gmail.com'];
+    }
+    function owner(uid) { return signedIn() && request.auth.uid == uid; }
+    function str(v, max) { return v is string && v.size() > 0 && v.size() <= max; }
+
+    // The parent's own data (written by the app and by the website's "delete my data" page).
+    match /users/{uid} {
+      allow read, write: if owner(uid);
+      allow read: if isAdmin();
+      match /sessions/{id} {
+        allow read, write: if owner(uid);
+        allow read: if isAdmin();
+      }
+      match /gift/{id} {
+        allow read, write: if owner(uid);
+        allow read: if isAdmin();
+      }
+    }
+
+    // Admin panel lists every gift / session with one collection-group query.
+    match /{path=**}/gift/{id}     { allow read: if isAdmin(); }
+    match /{path=**}/sessions/{id} { allow read: if isAdmin(); }
+
+    // Contact form and deletion requests: anyone may add one (validated), only the admin can read or change them.
+    match /supportMessages/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'message', 'lang', 'status', 'createdAt'])
+        && str(request.resource.data.name, 80)
+        && str(request.resource.data.email, 120)
+        && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && str(request.resource.data.message, 2000)
+        && request.resource.data.lang in ['en', 'bn']
+        && request.resource.data.status == 'new'
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+    match /deletionRequests/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['name', 'email', 'message', 'lang', 'status', 'createdAt'])
+        && str(request.resource.data.name, 80)
+        && str(request.resource.data.email, 120)
+        && request.resource.data.email.matches('^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$')
+        && str(request.resource.data.message, 2000)
+        && request.resource.data.lang in ['en', 'bn']
+        && request.resource.data.status == 'new'
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+
+    // Gift fulfilment status: admin only (parents can never mark their own gift "shipped").
+    match /fulfillment/{uid} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
