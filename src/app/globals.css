@@ -1,0 +1,40 @@
+:root{color-scheme:light only}
+html{scroll-behavior:smooth}
+body{margin:0;background:#FFF6E0}
+a{color:#B8462A}a:hover{color:#111111}
+@keyframes hmBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes hmWing{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
+@keyframes hmGlow{0%,100%{opacity:.75}50%{opacity:1}}
+@keyframes hmDrift{0%,100%{transform:translateX(0)}50%{transform:translateX(18px)}}
+.hm-bob{animation:hmBob 3.2s ease-in-out infinite}
+@keyframes hmCrawl{0%,100%{transform:translateX(-14px) scaleX(1)}45%{transform:translateX(14px) scaleX(1)}50%{transform:translateX(14px) scaleX(-1)}95%{transform:translateX(-14px) scaleX(-1)}}
+@keyframes hmStretch{0%,100%{transform:scaleX(1)}50%{transform:scaleX(1.08)}}
+@keyframes hmFeel{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
+@keyframes hmNod{0%,100%{transform:rotate(-5deg) translateY(0)}25%{transform:rotate(0) translateY(-3px)}50%{transform:rotate(5deg) translateY(0)}75%{transform:rotate(0) translateY(-3px)}}
+@keyframes hmBlink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.hm-crawl{animation:hmCrawl 7s ease-in-out infinite}
+.hm-body{transform-origin:0 10px;transform-box:fill-box;animation:hmStretch .9s ease-in-out infinite}
+.hm-feel{transform-box:fill-box;transform-origin:50% 100%;animation:hmFeel 1.4s ease-in-out infinite}
+.hm-nod{transform-origin:50% 90%;animation:hmNod 3.6s ease-in-out infinite}
+.hm-blink{transform-box:fill-box;transform-origin:50% 50%;animation:hmBlink 4s ease-in-out infinite}
+.hm-drift{animation:hmDrift 9s ease-in-out infinite}
+.hm-glow{animation:hmGlow 2.6s ease-in-out infinite}
+@keyframes hmInL{from{opacity:0;transform:translateX(-90px)}to{opacity:1;transform:none}}
+@keyframes hmInR{from{opacity:0;transform:translateX(90px)}to{opacity:1;transform:none}}
+@keyframes hmInU{from{opacity:0;transform:translateY(60px) scale(.96)}to{opacity:1;transform:none}}
+.hm-loadl{animation:hmInL .9s cubic-bezier(.2,.8,.2,1) both}
+.hm-loadr{animation:hmInR .9s cubic-bezier(.2,.8,.2,1) .18s both}
+.hm-inl,.hm-inr,.hm-inu{animation:.8s cubic-bezier(.2,.8,.2,1) both}
+.hm-inl{animation-name:hmInL}.hm-inr{animation-name:hmInR}.hm-inu{animation-name:hmInU}
+@supports (animation-timeline: view()){.hm-inl,.hm-inr,.hm-inu{animation-duration:auto;animation-timing-function:cubic-bezier(.2,.8,.2,1);animation-timeline:view();animation-range:entry 0% cover 32%}}
+@media (prefers-reduced-motion:reduce){.hm-loadl,.hm-loadr,.hm-inl,.hm-inr,.hm-inu{animation:none}}
+.hm-wl{transform-origin:46px 62px;animation:hmWing .35s ease-in-out infinite}
+.hm-wr{transform-origin:74px 62px;animation:hmWing .35s ease-in-out infinite reverse}
+.hm-navlinks{display:flex}
+@media (max-width:860px){.hm-navlinks{display:none}}
+@media (max-width:640px){.hm-cloud{display:none}.hm-herojonu{width:130px!important;top:-16px!important;right:0!important}}
+@media (prefers-reduced-motion:reduce){.hm-bob,.hm-drift,.hm-glow,.hm-wl,.hm-wr,.hm-crawl,.hm-body,.hm-feel,.hm-nod,.hm-blink{animation:none}}
+button{font:inherit}
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #111;outline-offset:2px}
+.hm-skip{position:absolute;left:-9999px;top:0;background:#111;color:#FFF6E0;padding:12px 18px;z-index:100}
+.hm-skip:focus{left:8px;top:8px}
