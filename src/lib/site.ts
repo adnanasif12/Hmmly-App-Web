@@ -11,3 +11,14 @@ export const FONTS_HREF =
 
 export const OG_LOCALE: Record<Lang, string> = { en: 'en_US', bn: 'bn_BD' };
 export const other = (l: Lang): Lang => (l === 'en' ? 'bn' : 'en');
+
+/** Book store. PLACEHOLDER prices (BDT): change before launch. */
+export const BOOK_PRICE = Number(process.env.NEXT_PUBLIC_BOOK_PRICE ?? 299);
+export const BOOK_DELIVERY = Number(process.env.NEXT_PUBLIC_BOOK_DELIVERY ?? 60);
+/** Order e-mail via EmailJS (free tier). Leave unset to skip the e-mail; orders are still saved and shown in /admin/. */
+export const EMAILJS = {
+  service: process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? '',
+  template: process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? '',
+  key: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? '',
+  to: process.env.NEXT_PUBLIC_ORDER_EMAIL ?? '',
+};

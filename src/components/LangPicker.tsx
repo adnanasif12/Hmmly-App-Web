@@ -13,9 +13,9 @@ export function LangPicker() {
     const pick = saved === 'bn' || saved === 'en' ? saved : navigator.language.toLowerCase().startsWith('bn') ? 'bn' : 'en';
     router.replace(`/${pick}/`);
   }, [router]);
-  const pill = { display: 'inline-flex', alignItems: 'center', minHeight: 56, padding: '0 28px', borderRadius: 999, border: '2.5px solid #111111', background: '#FFB82E', color: '#111111', fontWeight: 700, fontSize: 20, textDecoration: 'none', boxShadow: '0 4px 0 #111111', fontFamily: "'Hind Siliguri','Inter',sans-serif" } as const;
+  const pill = { display: 'inline-flex', alignItems: 'center', minHeight: 56, padding: '0 28px', borderRadius: 999, border: '1.5px solid rgba(17,17,17,0.14)', background: '#FFB82E', color: '#111111', fontWeight: 700, fontSize: 20, textDecoration: 'none', boxShadow: '0 4px 0 #111111', fontFamily: "'Hind Siliguri','Inter',sans-serif" } as const;
   return (
-    <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', background: '#FFF6E0', padding: 20, textAlign: 'center' }}>
+    <main style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', background: '#FAF9F6', padding: 20, textAlign: 'center' }}>
       <div style={{ display: 'grid', gap: 20, justifyItems: 'center' }}>
         <Logo size={96} />
         <h1 style={{ margin: 0, fontFamily: "'Space Grotesk',sans-serif", fontSize: 40 }}>Hmmly</h1>

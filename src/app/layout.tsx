@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   applicationName: 'Hmmly',
   icons: { icon: '/favicon-192.png', apple: '/apple-touch-icon.png' },
 };
-export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#FFF6E0', colorScheme: 'only light' };
+export const viewport: Viewport = { width: 'device-width', initialScale: 1, themeColor: '#FAF9F6', colorScheme: 'only light' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

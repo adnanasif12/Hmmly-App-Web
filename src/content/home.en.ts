@@ -9,6 +9,7 @@ export const homeEN: HomeContent = {
     "navSafety": "Safety",
     "navDownload": "Download",
     "navBlog": "Blog",
+    "navBooks": "Books",
     "blogKicker": "Blog · 8 min read",
     "blogTitle": "Why Hmmly? Who it is for, and what children gain",
     "blogSub": "The benefits for children and parents, what a session looks like, the research behind it, and how it handles screen time.",

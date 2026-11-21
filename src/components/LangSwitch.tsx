@@ -4,7 +4,7 @@ import { LANGS } from '@/content/types';
 
 const LABEL: Record<Lang, string> = { en: 'EN', bn: 'বাংলা' };
 
-export function LangSwitch({ lang, page }: { lang: Lang; page: 'home' | 'blog' | 'privacy' | 'contact' | 'delete' }) {
+export function LangSwitch({ lang, page }: { lang: Lang; page: 'home' | 'blog' | 'privacy' | 'contact' | 'delete' | 'books' }) {
   const sub = page === 'home' ? '' : page === 'delete' ? 'delete-account/' : `${page}/`;
   return (
     <>

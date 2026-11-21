@@ -53,6 +53,27 @@ service cloud.firestore {
       allow read, update, delete: if isAdmin();
     }
 
+    // Book orders (cash on delivery): anyone may place one (validated), only the admin can read or change them.
+    match /bookOrders/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['orderNo', 'book', 'name', 'phone', 'district', 'address', 'note', 'qty', 'unitPrice', 'delivery', 'total', 'payment', 'lang', 'status', 'createdAt'])
+        && str(request.resource.data.orderNo, 20)
+        && request.resource.data.book == 'brainy-bee-1'
+        && str(request.resource.data.name, 80)
+        && str(request.resource.data.phone, 20)
+        && request.resource.data.phone.matches('^\\+880[0-9]{8,11}$')
+        && str(request.resource.data.district, 60)
+        && str(request.resource.data.address, 300)
+        && request.resource.data.note is string && request.resource.data.note.size() <= 300
+        && request.resource.data.qty is int && request.resource.data.qty >= 1 && request.resource.data.qty <= 10
+        && request.resource.data.unitPrice is int && request.resource.data.delivery is int
+        && request.resource.data.total == request.resource.data.unitPrice * request.resource.data.qty + request.resource.data.delivery
+        && request.resource.data.payment == 'cod'
+        && request.resource.data.lang in ['en', 'bn']
+        && request.resource.data.status == 'new'
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isAdmin();
+    }
+
     // Gift fulfilment status: admin only (parents can never mark their own gift "shipped").
     match /fulfillment/{uid} {
       allow read, write: if isAdmin();

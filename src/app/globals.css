@@ -1,6 +1,6 @@
 :root{color-scheme:light only}
 html{scroll-behavior:smooth}
-body{margin:0;background:#FFF6E0}
+body{margin:0;background:#FAF9F6}
 a{color:#B8462A}a:hover{color:#111111}
 @keyframes hmBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @keyframes hmWing{0%,100%{transform:rotate(0)}50%{transform:rotate(-14deg)}}
@@ -36,5 +36,19 @@ a{color:#B8462A}a:hover{color:#111111}
 @media (prefers-reduced-motion:reduce){.hm-bob,.hm-drift,.hm-glow,.hm-wl,.hm-wr,.hm-crawl,.hm-body,.hm-feel,.hm-nod,.hm-blink{animation:none}}
 button{font:inherit}
 a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #111;outline-offset:2px}
-.hm-skip{position:absolute;left:-9999px;top:0;background:#111;color:#FFF6E0;padding:12px 18px;z-index:100}
+.hm-skip{position:absolute;left:-9999px;top:0;background:#111;color:#FAF9F6;padding:12px 18px;z-index:100}
 .hm-skip:focus{left:8px;top:8px}
+.hm-menu{display:none;position:static}
+.hm-menu summary{list-style:none;cursor:pointer;width:44px;height:44px;border:2px solid #111;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.hm-menu summary::-webkit-details-marker{display:none}
+.hm-menu summary span{width:18px;height:2.5px;background:#111;border-radius:2px}
+.hm-menu nav{position:absolute;left:12px;right:12px;top:calc(100% + 8px);background:#FFFFFF;border:2px solid #111;border-radius:20px;box-shadow:0 5px 0 #111;padding:8px;display:flex;flex-direction:column}
+.hm-menu nav a{padding:14px 16px;border-radius:12px;text-decoration:none;color:#111;font-weight:600;font-size:17px}
+.hm-menu nav a:hover{background:#FFE9BE}
+@media (max-width:860px){.hm-menu{display:block}}
+@media (max-width:640px){.hm-hdr-in{padding:10px 14px!important;gap:8px!important}.hm-hdr-in svg:first-child{width:36px;height:36px}.hm-hdr-in a>span{font-size:22px!important}.hm-dl{padding:0 14px!important;font-size:14px!important}}
+@media (max-width:400px){.hm-dl{display:none!important}}
+.hm-menu-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 8px 6px;margin-top:6px;border-top:1px solid rgba(17,17,17,0.1)}
+.hm-menu nav a.hm-menu-dl{display:inline-flex;align-items:center;min-height:44px;padding:0 22px;background:#111;color:#FAF9F6;font-weight:700;font-size:16px;border-radius:999px}
+.hm-menu nav a.hm-menu-dl:hover{background:#111}
+@media (max-width:860px){.hm-lang,.hm-dl-top{display:none!important}.hm-hdr-in>div:last-child{margin-left:auto}}

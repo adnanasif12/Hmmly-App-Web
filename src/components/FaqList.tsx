@@ -11,7 +11,7 @@ export function FaqList({ items }: { items: Faq[] }) {
       {items.map((q, i) => {
         const on = open === i;
         return (
-          <div key={q.q} className={q.side} style={{ background: '#FFFFFF', border: '2.5px solid #111111', borderRadius: 22, boxShadow: '0 4px 0 #111111', overflow: 'hidden' }}>
+          <div key={q.q} className={q.side} style={{ background: '#FFFFFF', border: '1.5px solid rgba(17,17,17,0.14)', borderRadius: 22, boxShadow: '0 4px 0 #111111', overflow: 'hidden' }}>
             <h3 style={{ margin: 0 }}>
               <button
                 type="button"
@@ -22,7 +22,7 @@ export function FaqList({ items }: { items: Faq[] }) {
                 style={{ width: '100%', minHeight: 60, padding: '16px 20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, background: 'transparent', border: 0, cursor: 'pointer', textAlign: 'left', fontFamily: "'Space Grotesk','Hind Siliguri',sans-serif", fontSize: 18, fontWeight: 700, color: '#111111' }}
               >
                 <span>{q.q}</span>
-                <span aria-hidden="true" style={{ flex: 'none', width: 32, height: 32, borderRadius: '50%', background: on ? '#FFB82E' : '#FFFFFF', border: '2px solid #111111', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, lineHeight: 1 }}>
+                <span aria-hidden="true" style={{ flex: 'none', width: 32, height: 32, borderRadius: '50%', background: on ? '#FFB82E' : '#FFFFFF', border: '1.5px solid rgba(17,17,17,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, lineHeight: 1 }}>
                   {on ? '–' : '+'}
                 </span>
               </button>

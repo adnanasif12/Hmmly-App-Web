@@ -4,20 +4,21 @@ import { useCallback, useEffect, useState } from 'react';
 import type { User } from 'firebase/auth';
 import { firebaseReady } from '@/lib/firebase-config';
 import {
-  FULFIL, adminSignOut, googleSignIn, isAdminUser, loadDeletionRequests, loadGifts, loadMessages, removeMsg, setFulfilment, setMsgStatus, watchAuth,
-  type Fulfil, type GiftRow, type MsgRow,
+  FULFIL, ORDER_STATUS, adminSignOut, googleSignIn, isAdminUser, loadDeletionRequests, loadGifts, loadMessages, loadOrders, removeMsg, setFulfilment, setMsgStatus, setOrderStatus, watchAuth,
+  type Fulfil, type GiftRow, type MsgRow, type OrderRow, type OrderStatus,
 } from '@/lib/admin';
 import { btnStyle, cardStyle, fieldStyle, h1Style, msgStyle } from './PageShell';
 
-type Tab = 'gifts' | 'messages' | 'deletions';
+type Tab = 'orders' | 'gifts' | 'messages' | 'deletions';
 const when = (ms: number) => (ms ? new Date(ms).toLocaleString() : '—');
 
 export function AdminApp() {
   const [user, setUser] = useState<User | null | undefined>(firebaseReady ? undefined : null);
-  const [tab, setTab] = useState<Tab>('gifts');
+  const [tab, setTab] = useState<Tab>('orders');
   const [gifts, setGifts] = useState<GiftRow[]>([]);
   const [msgs, setMsgs] = useState<MsgRow[]>([]);
   const [dels, setDels] = useState<MsgRow[]>([]);
+  const [orders, setOrders] = useState<OrderRow[]>([]);
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
 
@@ -27,8 +28,8 @@ export function AdminApp() {
   const refresh = useCallback(async () => {
     setBusy(true); setErr('');
     try {
-      const [g, m, d] = await Promise.all([loadGifts(), loadMessages(), loadDeletionRequests()]);
-      setGifts(g); setMsgs(m); setDels(d);
+      const [g, m, d, o] = await Promise.all([loadGifts(), loadMessages(), loadDeletionRequests(), loadOrders().catch(() => [] as OrderRow[])]);
+      setGifts(g); setMsgs(m); setDels(d); setOrders(o);
     } catch (e) { setErr((e as Error).message || 'Could not load'); } finally { setBusy(false); }
   }, []);
   useEffect(() => { if (ok) void Promise.resolve().then(refresh); }, [ok, refresh]);
@@ -54,6 +55,7 @@ export function AdminApp() {
 
   const newMsgs = msgs.filter((m) => m.status === 'new').length;
   const newDels = dels.filter((m) => m.status === 'new').length;
+  const newOrders = orders.filter((o) => o.status === 'new').length;
   const tabBtn = (t: Tab, label: string) => (
     <button key={t} type="button" onClick={() => setTab(t)} aria-pressed={tab === t} style={{ ...btnStyle, minHeight: 44, boxShadow: 'none', background: tab === t ? '#111' : '#fff', color: tab === t ? '#FFB82E' : '#111' }}>{label}</button>
   );
@@ -67,9 +69,10 @@ export function AdminApp() {
         <button type="button" style={{ ...btnStyle, minHeight: 40, boxShadow: 'none', background: '#fff' }} onClick={() => adminSignOut()}>Sign out</button>
       </div>
       <div role="group" aria-label="Sections" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
-        {tabBtn('gifts', `Gifts (${gifts.length})`)}{tabBtn('messages', `Messages (${newMsgs} new)`)}{tabBtn('deletions', `Deletion requests (${newDels} new)`)}
+        {tabBtn('orders', `Book orders (${newOrders} new)`)}{tabBtn('gifts', `Gifts (${gifts.length})`)}{tabBtn('messages', `Messages (${newMsgs} new)`)}{tabBtn('deletions', `Deletion requests (${newDels} new)`)}
       </div>
       {err && <p style={msgStyle(false)}>{err}</p>}
+      {tab === 'orders' && <OrderList rows={orders} onChange={refresh} />}
       {tab === 'gifts' && <GiftList rows={gifts} onChange={refresh} />}
       {tab === 'messages' && <MsgList col="supportMessages" rows={msgs} onChange={refresh} />}
       {tab === 'deletions' && <MsgList col="deletionRequests" rows={dels} onChange={refresh} />}
@@ -126,6 +129,30 @@ function MsgList({ col, rows, onChange }: { col: 'supportMessages' | 'deletionRe
             <button type="button" style={{ ...btnStyle, minHeight: 40, boxShadow: 'none' }} onClick={async () => { await setMsgStatus(col, m.id, m.status === 'done' ? 'new' : 'done'); onChange(); }}>{m.status === 'done' ? 'Reopen' : 'Mark done'}</button>
             {m.status === 'done' && <button type="button" style={{ ...btnStyle, minHeight: 40, boxShadow: 'none', background: '#fff' }} onClick={async () => { await removeMsg(col, m.id); onChange(); }}>Delete</button>}
           </div>
+        </section>
+      ))}
+    </div>
+  );
+}
+
+function OrderList({ rows, onChange }: { rows: OrderRow[]; onChange: () => void }) {
+  if (!rows.length) return <p>No book orders yet.</p>;
+  return (
+    <div style={{ display: 'grid', gap: 16 }}>
+      {rows.map((o) => (
+        <section key={o.id} style={{ ...cardStyle, display: 'grid', gap: 6, fontSize: 15, opacity: o.status === 'cancelled' || o.status === 'delivered' ? 0.7 : 1 }}>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'baseline' }}>
+            <b style={{ fontSize: 17 }}>{o.orderNo}</b>
+            <span>{o.qty} × book · ৳{o.total} (COD)</span>
+            <span style={{ marginLeft: 'auto', fontSize: 13, color: '#62625C' }}>{o.lang.toUpperCase()} · {when(o.when)}</span>
+          </div>
+          <div><b>{o.name}</b> · <a href={`tel:${o.phone}`}>{o.phone}</a></div>
+          <div style={{ overflowWrap: 'anywhere' }}>{o.district}: {o.address}</div>
+          {o.note && <div style={{ overflowWrap: 'anywhere', color: '#3A3A36' }}>Note: {o.note}</div>}
+          <select aria-label="Order status" value={o.status} style={{ ...fieldStyle, width: 'auto', minHeight: 44, marginTop: 6, justifySelf: 'start' }}
+            onChange={async (e) => { await setOrderStatus(o.id, e.target.value as OrderStatus); onChange(); }}>
+            {ORDER_STATUS.map((x) => <option key={x}>{x}</option>)}
+          </select>
         </section>
       ))}
     </div>

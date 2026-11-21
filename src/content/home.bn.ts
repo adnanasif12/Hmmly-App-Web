@@ -9,6 +9,7 @@ export const homeBN: HomeContent = {
     "navSafety": "নিরাপত্তা",
     "navDownload": "ডাউনলোড",
     "navBlog": "ব্লগ",
+    "navBooks": "বই",
     "blogKicker": "ব্লগ · ৮ মিনিটে পড়া",
     "blogTitle": "কেন Hmmly? কাদের জন্য, আর বাচ্চারা কী পায়",
     "blogSub": "বাচ্চা আর বাবা-মায়ের কী উপকার হয়, একটা সেশন কেমন হয়, পেছনের গবেষণা আর স্ক্রিন টাইম নিয়ে বিস্তারিত।",

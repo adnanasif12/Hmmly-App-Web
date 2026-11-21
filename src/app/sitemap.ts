@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/site';
 import { urlOf, type PageKey } from '@/lib/seo';
 
 export const dynamic = 'force-static';
-const PAGES: PageKey[] = ['home', 'blog', 'privacy', 'contact'];
+const PAGES: PageKey[] = ['home', 'blog', 'books', 'privacy', 'contact'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return PAGES.flatMap((p) =>

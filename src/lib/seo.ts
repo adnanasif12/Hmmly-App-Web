@@ -3,14 +3,15 @@ import type { BlogContent, HomeContent, Lang } from '@/content/types';
 import { LANGS } from '@/content/types';
 import { OG_LOCALE, PLAY_URL, SITE_URL } from './site';
 
-export type PageKey = 'home' | 'blog' | 'privacy' | 'contact' | 'delete-account';
-const PATH: Record<PageKey, string> = { home: '', blog: 'blog/', privacy: 'privacy/', contact: 'contact/', 'delete-account': 'delete-account/' };
+export type PageKey = 'home' | 'blog' | 'books' | 'privacy' | 'contact' | 'delete-account';
+const PATH: Record<PageKey, string> = { home: '', blog: 'blog/', books: 'books/', privacy: 'privacy/', contact: 'contact/', 'delete-account': 'delete-account/' };
 export const urlOf = (lang: Lang, page: PageKey) => `${SITE_URL}/${lang}/${PATH[page]}`;
 
 export const COPY: Record<Lang, Record<PageKey, { title: string; description: string }>> = {
   en: {
     home: { title: 'Hmmly: Thinking Games for Kids 3–5 (Bangla & English)', description: 'Free, ad-free app for children aged 3–5. Jonu the firefly has a small problem every day — your child solves it with real things at home.' },
     blog: { title: 'Why Hmmly? Who it is for, and what children gain | Hmmly', description: 'How small everyday problems grow big thinking — a plain guide for parents, grandparents and everyone who looks after a little one.' },
+    books: { title: 'Brainy Bee Activity Book — Hmmly Books', description: 'A 33-page printed brain-booster activity book for ages 4–7: mazes, logic, counting and colouring. Order with cash on delivery.' },
     privacy: { title: 'Privacy Policy — Hmmly', description: 'What Hmmly keeps about you and your child, why, where it is stored and how to delete it.' },
     contact: { title: 'Contact — Hmmly', description: 'Questions, ideas or a problem with the app? Write to the Hmmly team.' },
     'delete-account': { title: 'Delete my data — Hmmly', description: 'A parent can erase everything Hmmly stores online: child’s nickname and age, progress, gift details and the sign-in.' },
@@ -18,6 +19,7 @@ export const COPY: Record<Lang, Record<PageKey, { title: string; description: st
   bn: {
     home: { title: 'Hmmly: ৩–৫ বছরের শিশুদের ভাবনার খেলা (বাংলা ও ইংরেজি)', description: '৩–৫ বছরের শিশুদের জন্য ফ্রি, বিজ্ঞাপনহীন অ্যাপ। জোনাকি জোনুর প্রতিদিনের ছোট সমস্যা বাচ্চা ঘরের জিনিস দিয়ে সমাধান করে — আপনি পাশে থাকেন।' },
     blog: { title: 'কেন Hmmly? কাদের জন্য, আর বাচ্চারা কী পায় | Hmmly', description: 'ঘরের ছোট ছোট সমস্যা কীভাবে বড় ভাবনা তৈরি করে — অভিভাবক, দাদা-দাদি ও শিশুর যত্ন নেওয়া সবার জন্য একটি সহজ গাইড।' },
+    books: { title: 'মৌ-এর মগজ খেলা — Hmmly বই', description: '৪–৭ বছরের জন্য ৩৩ পৃষ্ঠার ছাপানো মগজ খেলার বই: গোলকধাঁধা, যুক্তি, গোনা ও রং করা। ক্যাশ অন ডেলিভারিতে অর্ডার করুন।' },
     privacy: { title: 'গোপনীয়তা নীতি — Hmmly', description: 'Hmmly আপনার ও আপনার শিশুর কী তথ্য রাখে, কেন রাখে, কোথায় থাকে আর কীভাবে মুছবেন।' },
     contact: { title: 'যোগাযোগ — Hmmly', description: 'প্রশ্ন, পরামর্শ বা অ্যাপে সমস্যা? Hmmly দলকে লিখুন।' },
     'delete-account': { title: 'আমার তথ্য মুছুন — Hmmly', description: 'অভিভাবক Hmmly-র অনলাইনে রাখা সব তথ্য মুছে ফেলতে পারেন: শিশুর ডাকনাম ও বয়স, অগ্রগতি, উপহারের তথ্য ও সাইন-ইন।' },

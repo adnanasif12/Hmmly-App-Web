@@ -49,3 +49,22 @@ export const loadMessages = () => loadMsgs('supportMessages');
 export const loadDeletionRequests = () => loadMsgs('deletionRequests');
 export const setMsgStatus = (col: 'supportMessages' | 'deletionRequests', id: string, status: 'new' | 'done') => updateDoc(doc(db(), col, id), { status });
 export const removeMsg = (col: 'supportMessages' | 'deletionRequests', id: string) => deleteDoc(doc(db(), col, id));
+
+export type OrderStatus = 'new' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+export const ORDER_STATUS: OrderStatus[] = ['new', 'confirmed', 'shipped', 'delivered', 'cancelled'];
+export interface OrderRow {
+  id: string; orderNo: string; name: string; phone: string; district: string; address: string; note: string;
+  qty: number; total: number; status: OrderStatus; lang: string; when: number;
+}
+export async function loadOrders(): Promise<OrderRow[]> {
+  const q = await getDocs(query(collection(db(), 'bookOrders'), orderBy('createdAt', 'desc'), limit(300)));
+  return q.docs.map((d) => {
+    const x = d.data();
+    return {
+      id: d.id, orderNo: s(x.orderNo), name: s(x.name), phone: s(x.phone), district: s(x.district), address: s(x.address), note: s(x.note),
+      qty: typeof x.qty === 'number' ? x.qty : 1, total: typeof x.total === 'number' ? x.total : 0,
+      status: (ORDER_STATUS.includes(x.status) ? x.status : 'new') as OrderStatus, lang: s(x.lang), when: ms(x.createdAt),
+    };
+  });
+}
+export const setOrderStatus = (id: string, status: OrderStatus) => updateDoc(doc(db(), 'bookOrders', id), { status });
